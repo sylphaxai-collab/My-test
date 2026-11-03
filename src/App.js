@@ -1,126 +1,217 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Handle window resize to update mobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Cleanup listener on unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const styles = {
     app: {
       backgroundColor: '#fffaf9', // creamy white
       minHeight: '100vh',
-      padding: '40px 20px',
       fontFamily: 'Arial, sans-serif',
       color: '#333',
+      display: 'flex',
+      flexDirection: 'column',
     },
     header: {
       backgroundColor: '#f8d7da', // soft pink
-      padding: '60px 40px',
-      borderRadius: '16px',
-      textAlign: 'center',
-      boxShadow: '0 6px 12px rgba(0,0,0,0.1)',
-      marginBottom: '40px',
-      marginTop: '20px',
-      maxWidth: '900px',
-      margin: '20px auto 40px',
+      padding: '20px 40px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+      flexWrap: 'wrap',
     },
-    heading: {
-      color: '#e84a5f', // deeper soft pink for text
-      margin: '0 0 16px 0',
-      fontSize: '2.8rem',
+    logo: {
+      fontSize: '1.8rem',
       fontWeight: 'bold',
-      textShadow: '1px 1px 2px rgba(255,255,255,0.5)',
+      color: '#e84a5f',
+      margin: 0,
     },
-    paragraph: {
-      color: '#555',
-      fontSize: '1.2rem',
-      lineHeight: '1.6',
-      maxWidth: '700px',
-      margin: '0 auto',
+    searchContainer: {
+      flex: '1',
+      maxWidth: '400px',
+      margin: '0 20px',
     },
-    imageAgentSection: {
+    searchInput: {
+      width: '100%',
+      padding: '10px 15px',
+      borderRadius: '25px',
+      border: '1px solid #ddd',
+      fontSize: '1rem',
+      outline: 'none',
+    },
+    profileSection: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+    },
+    profileAvatar: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      backgroundColor: '#e84a5f',
       display: 'flex',
       justifyContent: 'center',
-      flexWrap: 'wrap',
-      gap: '30px',
-      padding: '40px 20px',
-      marginTop: '40px',
-    },
-    imageCard: {
-      backgroundColor: '#ffffff', // pure white card
-      borderRadius: '16px',
-      boxShadow: '0 6px 15px rgba(0,0,0,0.08)',
-      overflow: 'hidden',
-      width: '300px',
-      textAlign: 'center',
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    },
-    imageCardHover: {
-      transform: 'scale(1.03)',
-      boxShadow: '0 10px 20px rgba(0,0,0,0.12)',
-    },
-    imagePlaceholder: {
-      height: '200px',
-      width: '100%',
-      objectFit: 'cover',
-    },
-    cardTitle: {
-      fontSize: '1.3rem',
-      margin: '16px 0 8px',
-      color: '#e84a5f',
-    },
-    cardText: {
+      alignItems: 'center',
+      color: '#fff',
+      fontWeight: 'bold',
       fontSize: '1rem',
-      color: '#666',
-      padding: '0 16px 16px',
-      lineHeight: '1.5',
+    },
+    mainContent: {
+      display: 'flex',
+      flexDirection: 'row',
+      flex: 1,
+      minHeight: 'calc(100vh - 80px)',
+    },
+    sidebar: {
+      width: '250px',
+      backgroundColor: '#ffffff',
+      boxShadow: '2px 0 8px rgba(0,0,0,0.08)',
+      padding: '20px',
+      position: 'fixed',
+      height: 'calc(100vh - 80px)',
+      top: '80px',
+      left: 0,
+      overflowY: 'auto',
+      zIndex: 99,
+    },
+    navList: {
+      listStyle: 'none',
+      padding: 0,
+      margin: 0,
+    },
+    navItem: {
+      padding: '12px 16px',
+      borderRadius: '8px',
+      color: '#555',
+      textDecoration: 'none',
+      display: 'block',
+      fontWeight: '500',
+      transition: 'all 0.2s ease',
+      marginBottom: '8px',
+    },
+    navItemActive: {
+      backgroundColor: '#e84a5f',
+      color: '#fff',
+    },
+    content: {
+      flex: 1,
+      marginLeft: '250px',
+      padding: '40px 20px',
+      backgroundColor: '#fffaf9',
+    },
+    // Corrected media query syntax with hyphenated 'max-width'
+    '@media (max-width: 768px)': {
+      header: {
+        flexDirection: 'column',
+        padding: '15px',
+        gap: '10px',
+      },
+      searchContainer: {
+        maxWidth: '100%',
+        margin: '10px 0',
+      },
+      profileSection: {
+        order: 3,
+      },
+      sidebar: {
+        width: '100%',
+        position: 'relative',
+        height: 'auto',
+        top: 'initial',
+        left: 'initial',
+        padding: '10px',
+        marginBottom: '20px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.08)',
+        zIndex: 1, // Ensure proper stacking on mobile
+      },
+      mainContent: {
+        flexDirection: 'column',
+      },
+      content: {
+        marginLeft: 0,
+        padding: '20px 10px',
+        zIndex: 0, // Lower than sidebar to avoid overlap
+      },
     },
   };
 
+  // Use corrected media query key
+  const mediaQueryStyles = styles['@media (max-width: 768px)'];
+
   return (
     <div className="App" style={styles.app}>
-      {/* Header Section */}
-      <header className="App-header" style={styles.header}>
-        <h1 style={styles.heading}>Welcome to My React App</h1>
-        <p style={styles.paragraph}>
-          A beautifully designed interface with modern styling, soft tones, and a clean layout.
-        </p>
+      {/* Top Header */}
+      <header className="App-header" style={{ ...styles.header, ...(isMobile ? mediaQueryStyles.header : {}) }}>
+        <h1 style={styles.logo}>SaaS Dashboard</h1>
+        <div style={{ ...styles.searchContainer, ...(isMobile ? mediaQueryStyles.searchContainer : {}) }}>
+          <input type="text" placeholder="Search..." style={styles.searchInput} />
+        </div>
+        <div style={{ ...styles.profileSection, ...(isMobile ? mediaQueryStyles.profileSection : {}) }}>
+          <div style={styles.profileAvatar}>U</div>
+        </div>
       </header>
 
-      {/* Image Agent Section */}
-      <section style={styles.imageAgentSection}>
-        <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
-          <img
-            src="https://picsum.photos/300/200"
-            alt="AI-Generated Art"
-            style={styles.imagePlaceholder}
-          />
-          <h3 style={styles.cardTitle}>AI-Generated Art</h3>
-          <p style={styles.cardText}>
-            Explore stunning visuals created by our advanced image generation agent.
-          </p>
-        </div>
+      {/* Main Layout */}
+      <div
+        style={{
+          ...styles.mainContent,
+          ...(isMobile ? mediaQueryStyles.mainContent : {}),
+        }}
+      >
+        {/* Sidebar */}
+        <aside
+          style={{
+            ...styles.sidebar,
+            ...(isMobile ? mediaQueryStyles.sidebar : {}),
+          }}
+        >
+          <nav>
+            <ul style={styles.navList}>
+              <li>
+                <a href="#overview" style={{ ...styles.navItem, ...styles.navItemActive }}>Overview</a>
+              </li>
+              <li>
+                <a href="#projects" style={styles.navItem}>Projects</a>
+              </li>
+              <li>
+                <a href="#tasks" style={styles.navItem}>Tasks</a>
+              </li>
+              <li>
+                <a href="#team" style={styles.navItem}>Team</a>
+              </li>
+              <li>
+                <a href="#analytics" style={styles.navItem}>Analytics</a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
 
-        <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
-          <img
-            src="https://picsum.photos/seed/creative/300/200"
-            alt="Creative Design"
-            style={styles.imagePlaceholder}
-          />
-          <h3 style={styles.cardTitle}>Smart Curation</h3>
-          <p style={styles.cardText}>
-            Personalized image recommendations powered by intelligent algorithms.
-          </p>
-        </div>
-
-        <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
-          <img
-            src="https://picsum.photos/seed/nextgen/300/200"
-            alt="Next-Gen UI"
-            style={styles.imagePlaceholder}
-          />
-          <h3 style={styles.cardTitle}>Enhanced Experience</h3>
-          <p style={styles.cardText}>
-            Seamless interaction with elegant design and fluid animations.
-          </p>
-        </div>
-      </section>
+        {/* Main Content Area */}
+        <main
+          style={{
+            ...styles.content,
+            ...(isMobile ? mediaQueryStyles.content : {}),
+          }}
+        >
+          <h2 style={{ color: '#e84a5f', marginBottom: '20px' }}>Dashboard Overview</h2>
+          <p>Welcome to your project management dashboard. Navigate using the sidebar.</p>
+        </main>
+      </div>
     </div>
   );
 }
