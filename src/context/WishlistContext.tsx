@@ -48,23 +48,32 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const toggleWishlist = async (productId: number) => {
     if (!user) {
-      // For unauthenticated users, you might want to redirect to login
       return;
     }
 
     try {
-      const result = await wishlistService.toggleWishlist(productId);
-      if (!result.error) {
-        setWishlist(prev => {
-          if (result.in_wishlist) {
-            return [...prev, productId];
-          } else {
-            return prev.filter(id => id !== productId);
-          }
-        });
+      // Check current state first
+      const isCurrentlyInWishlist = wishlist.includes(productId);
+
+      if (isCurrentlyInWishlist) {
+        // Use dedicated remove endpoint when removing
+        const result = await wishlistService.removeWishlistItem(productId);
+        if (result.success) {
+          setWishlist(prev => prev.filter(id => id !== productId));
+        } else {
+          throw new Error(result.error);
+        }
+      } else {
+        // Use toggle for adding (as before)
+        const result = await wishlistService.toggleWishlist(productId);
+        if (!result.error) {
+          setWishlist(prev => [...prev, productId]);
+        } else {
+          throw new Error(result.error);
+        }
       }
     } catch (error) {
-      console.error('Failed to toggle wishlist:', error);
+      console.error('Failed to update wishlist:', error);
     }
   };
 

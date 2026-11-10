@@ -81,5 +81,31 @@ export const wishlistService = {
     } catch (error: any) {
       return { error: error.message };
     }
+  },
+
+  async removeWishlistItem(productId: number): Promise<{ success: boolean; error?: string }> {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        return { success: false, error: 'Unauthorized' };
+      }
+
+      const response = await fetch('/api/wishlist', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: productId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return { success: false, error: errorData.error || 'Failed to remove item from wishlist' };
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Network error occurred' };
+    }
   }
 };
