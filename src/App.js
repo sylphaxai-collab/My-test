@@ -41,6 +41,7 @@ function App() {
       gap: '30px',
       padding: '40px 20px',
       marginTop: '40px',
+      width: '100%',
     },
     imageCard: {
       backgroundColor: '#ffffff', // pure white card
@@ -77,9 +78,9 @@ function App() {
     <div className="App" style={styles.app}>
       {/* Header Section */}
       <header className="App-header" style={styles.header}>
-        <h1 style={styles.heading}>Welcome to My React App</h1>
+        <h1 style={styles.heading}>SylphaX Ai Labs</h1>
         <p style={styles.paragraph}>
-          A beautifully designed interface with modern styling, soft tones, and a clean layout.
+          Pioneering innovation in artificial intelligence with cutting-edge research and intelligent systems.
         </p>
       </header>
 
@@ -88,36 +89,36 @@ function App() {
         <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
           <img
             src="https://picsum.photos/300/200"
-            alt="AI-Generated Art"
+            alt="Generative Vision"
             style={styles.imagePlaceholder}
           />
-          <h3 style={styles.cardTitle}>AI-Generated Art</h3>
+          <h3 style={styles.cardTitle}>Generative Vision</h3>
           <p style={styles.cardText}>
-            Explore stunning visuals created by our advanced image generation agent.
+            Create high-fidelity visual content using advanced generative models trained on diverse multimodal datasets.
           </p>
         </div>
 
         <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
           <img
             src="https://picsum.photos/seed/creative/300/200"
-            alt="Creative Design"
+            alt="Intelligent Agents"
             style={styles.imagePlaceholder}
           />
-          <h3 style={styles.cardTitle}>Smart Curation</h3>
+          <h3 style={styles.cardTitle}>Intelligent Agents</h3>
           <p style={styles.cardText}>
-            Personalized image recommendations powered by intelligent algorithms.
+            Autonomous systems that learn, reason, and act in dynamic environments with real-time decision-making capabilities.
           </p>
         </div>
 
         <div style={styles.imageCard} onMouseEnter={(e) => Object.assign(e.target.style, styles.imageCardHover)} onMouseLeave={(e) => Object.assign(e.target.style, styles.imageCard)}>
           <img
             src="https://picsum.photos/seed/nextgen/300/200"
-            alt="Next-Gen UI"
+            alt="Future Interfaces"
             style={styles.imagePlaceholder}
           />
-          <h3 style={styles.cardTitle}>Enhanced Experience</h3>
+          <h3 style={styles.cardTitle}>Future Interfaces</h3>
           <p style={styles.cardText}>
-            Seamless interaction with elegant design and fluid animations.
+            Next-generation human-AI interaction through intuitive, adaptive, and context-aware interface technologies.
           </p>
         </div>
       </section>
